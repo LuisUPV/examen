@@ -1,0 +1,441 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="examenModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Articulos">
+          <Key>
+            <PropertyRef Name="id_Articulo" />
+          </Key>
+          <Property Name="id_Articulo" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+          <Property Name="Precio" Type="float" />
+          <Property Name="Stock" Type="int" />
+          <Property Name="Stock_Minimo" Type="int" />
+        </EntityType>
+        <EntityType Name="Ciudades">
+          <Key>
+            <PropertyRef Name="id_Ciudad" />
+          </Key>
+          <Property Name="id_Ciudad" Type="int" Nullable="false" />
+          <Property Name="Nombre_Ciudad" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="id_Cliente" />
+          </Key>
+          <Property Name="id_Cliente" Type="int" Nullable="false" />
+          <Property Name="Nombre_Cliente" Type="varchar" MaxLength="50" />
+          <Property Name="Direccion_Cliente" Type="varchar" MaxLength="100" />
+          <Property Name="CP_Cliente" Type="int" />
+          <Property Name="Ciudad_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Detalles_Facturas">
+          <Key>
+            <PropertyRef Name="id_Detalle_Factura" />
+          </Key>
+          <Property Name="id_Detalle_Factura" Type="int" Nullable="false" />
+          <Property Name="Total" Type="int" />
+          <Property Name="Articulo_id" Type="int" />
+          <Property Name="Cantidad" Type="int" />
+        </EntityType>
+        <EntityType Name="Facturas">
+          <Key>
+            <PropertyRef Name="id_Factura" />
+          </Key>
+          <Property Name="id_Factura" Type="int" Nullable="false" />
+          <Property Name="Fecha" Type="date" />
+          <Property Name="Cliente_id" Type="int" />
+          <Property Name="Vendedor_id" Type="int" />
+          <Property Name="Iva" Type="float" />
+          <Property Name="Descuento" Type="float" />
+          <Property Name="Detalle_Factura_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Vendedores">
+          <Key>
+            <PropertyRef Name="Id_Vendedor" />
+          </Key>
+          <Property Name="Id_Vendedor" Type="int" Nullable="false" />
+          <Property Name="Nombre_Vendedor" Type="varchar" MaxLength="50" />
+          <Property Name="Direccion_Vendedor" Type="varchar" MaxLength="50" />
+          <Property Name="CP_Vendedor" Type="varchar" MaxLength="50" />
+          <Property Name="Ciudad_id" Type="int" />
+        </EntityType>
+        <Association Name="FK_Clientes_Ciudades">
+          <End Role="Ciudades" Type="Self.Ciudades" Multiplicity="0..1" />
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudades">
+              <PropertyRef Name="id_Ciudad" />
+            </Principal>
+            <Dependent Role="Clientes">
+              <PropertyRef Name="Ciudad_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Detalles_Facturas_Articulos">
+          <End Role="Articulos" Type="Self.Articulos" Multiplicity="0..1" />
+          <End Role="Detalles_Facturas" Type="Self.Detalles_Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articulos">
+              <PropertyRef Name="id_Articulo" />
+            </Principal>
+            <Dependent Role="Detalles_Facturas">
+              <PropertyRef Name="Articulo_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Facturas_Clientes">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="0..1" />
+          <End Role="Facturas" Type="Self.Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="id_Cliente" />
+            </Principal>
+            <Dependent Role="Facturas">
+              <PropertyRef Name="Cliente_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Facturas_Detalles_Facturas">
+          <End Role="Detalles_Facturas" Type="Self.Detalles_Facturas" Multiplicity="0..1" />
+          <End Role="Facturas" Type="Self.Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Detalles_Facturas">
+              <PropertyRef Name="id_Detalle_Factura" />
+            </Principal>
+            <Dependent Role="Facturas">
+              <PropertyRef Name="Detalle_Factura_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Facturas_Vendedores">
+          <End Role="Vendedores" Type="Self.Vendedores" Multiplicity="0..1" />
+          <End Role="Facturas" Type="Self.Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendedores">
+              <PropertyRef Name="Id_Vendedor" />
+            </Principal>
+            <Dependent Role="Facturas">
+              <PropertyRef Name="Vendedor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vendedores_Ciudades">
+          <End Role="Ciudades" Type="Self.Ciudades" Multiplicity="0..1" />
+          <End Role="Vendedores" Type="Self.Vendedores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudades">
+              <PropertyRef Name="id_Ciudad" />
+            </Principal>
+            <Dependent Role="Vendedores">
+              <PropertyRef Name="Ciudad_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="examenModelStoreContainer">
+          <EntitySet Name="Articulos" EntityType="Self.Articulos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ciudades" EntityType="Self.Ciudades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Detalles_Facturas" EntityType="Self.Detalles_Facturas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Facturas" EntityType="Self.Facturas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vendedores" EntityType="Self.Vendedores" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Clientes_Ciudades" Association="Self.FK_Clientes_Ciudades">
+            <End Role="Ciudades" EntitySet="Ciudades" />
+            <End Role="Clientes" EntitySet="Clientes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Detalles_Facturas_Articulos" Association="Self.FK_Detalles_Facturas_Articulos">
+            <End Role="Articulos" EntitySet="Articulos" />
+            <End Role="Detalles_Facturas" EntitySet="Detalles_Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Facturas_Clientes" Association="Self.FK_Facturas_Clientes">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Facturas" EntitySet="Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Facturas_Detalles_Facturas" Association="Self.FK_Facturas_Detalles_Facturas">
+            <End Role="Detalles_Facturas" EntitySet="Detalles_Facturas" />
+            <End Role="Facturas" EntitySet="Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Facturas_Vendedores" Association="Self.FK_Facturas_Vendedores">
+            <End Role="Vendedores" EntitySet="Vendedores" />
+            <End Role="Facturas" EntitySet="Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vendedores_Ciudades" Association="Self.FK_Vendedores_Ciudades">
+            <End Role="Ciudades" EntitySet="Ciudades" />
+            <End Role="Vendedores" EntitySet="Vendedores" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="examenModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="examenEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Articulos" EntityType="examenModel.Articulos" />
+          <EntitySet Name="Ciudades" EntityType="examenModel.Ciudades" />
+          <EntitySet Name="Clientes" EntityType="examenModel.Clientes" />
+          <EntitySet Name="Detalles_Facturas" EntityType="examenModel.Detalles_Facturas" />
+          <EntitySet Name="Facturas" EntityType="examenModel.Facturas" />
+          <EntitySet Name="Vendedores" EntityType="examenModel.Vendedores" />
+          <AssociationSet Name="FK_Detalles_Facturas_Articulos" Association="examenModel.FK_Detalles_Facturas_Articulos">
+            <End Role="Articulos" EntitySet="Articulos" />
+            <End Role="Detalles_Facturas" EntitySet="Detalles_Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Clientes_Ciudades" Association="examenModel.FK_Clientes_Ciudades">
+            <End Role="Ciudades" EntitySet="Ciudades" />
+            <End Role="Clientes" EntitySet="Clientes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vendedores_Ciudades" Association="examenModel.FK_Vendedores_Ciudades">
+            <End Role="Ciudades" EntitySet="Ciudades" />
+            <End Role="Vendedores" EntitySet="Vendedores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Facturas_Clientes" Association="examenModel.FK_Facturas_Clientes">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Facturas" EntitySet="Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Facturas_Detalles_Facturas" Association="examenModel.FK_Facturas_Detalles_Facturas">
+            <End Role="Detalles_Facturas" EntitySet="Detalles_Facturas" />
+            <End Role="Facturas" EntitySet="Facturas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Facturas_Vendedores" Association="examenModel.FK_Facturas_Vendedores">
+            <End Role="Vendedores" EntitySet="Vendedores" />
+            <End Role="Facturas" EntitySet="Facturas" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Articulos">
+          <Key>
+            <PropertyRef Name="id_Articulo" />
+          </Key>
+          <Property Name="id_Articulo" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Precio" Type="Double" />
+          <Property Name="Stock" Type="Int32" />
+          <Property Name="Stock_Minimo" Type="Int32" />
+          <NavigationProperty Name="Detalles_Facturas" Relationship="examenModel.FK_Detalles_Facturas_Articulos" FromRole="Articulos" ToRole="Detalles_Facturas" />
+        </EntityType>
+        <EntityType Name="Ciudades">
+          <Key>
+            <PropertyRef Name="id_Ciudad" />
+          </Key>
+          <Property Name="id_Ciudad" Type="Int32" Nullable="false" />
+          <Property Name="Nombre_Ciudad" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Clientes" Relationship="examenModel.FK_Clientes_Ciudades" FromRole="Ciudades" ToRole="Clientes" />
+          <NavigationProperty Name="Vendedores" Relationship="examenModel.FK_Vendedores_Ciudades" FromRole="Ciudades" ToRole="Vendedores" />
+        </EntityType>
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="id_Cliente" />
+          </Key>
+          <Property Name="id_Cliente" Type="Int32" Nullable="false" />
+          <Property Name="Nombre_Cliente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion_Cliente" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CP_Cliente" Type="Int32" />
+          <Property Name="Ciudad_id" Type="Int32" />
+          <NavigationProperty Name="Ciudades" Relationship="examenModel.FK_Clientes_Ciudades" FromRole="Clientes" ToRole="Ciudades" />
+          <NavigationProperty Name="Facturas" Relationship="examenModel.FK_Facturas_Clientes" FromRole="Clientes" ToRole="Facturas" />
+        </EntityType>
+        <EntityType Name="Detalles_Facturas">
+          <Key>
+            <PropertyRef Name="id_Detalle_Factura" />
+          </Key>
+          <Property Name="id_Detalle_Factura" Type="Int32" Nullable="false" />
+          <Property Name="Total" Type="Int32" />
+          <Property Name="Articulo_id" Type="Int32" />
+          <Property Name="Cantidad" Type="Int32" />
+          <NavigationProperty Name="Articulos" Relationship="examenModel.FK_Detalles_Facturas_Articulos" FromRole="Detalles_Facturas" ToRole="Articulos" />
+          <NavigationProperty Name="Facturas" Relationship="examenModel.FK_Facturas_Detalles_Facturas" FromRole="Detalles_Facturas" ToRole="Facturas" />
+        </EntityType>
+        <EntityType Name="Facturas">
+          <Key>
+            <PropertyRef Name="id_Factura" />
+          </Key>
+          <Property Name="id_Factura" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Precision="0" />
+          <Property Name="Cliente_id" Type="Int32" />
+          <Property Name="Vendedor_id" Type="Int32" />
+          <Property Name="Iva" Type="Double" />
+          <Property Name="Descuento" Type="Double" />
+          <Property Name="Detalle_Factura_id" Type="Int32" />
+          <NavigationProperty Name="Clientes" Relationship="examenModel.FK_Facturas_Clientes" FromRole="Facturas" ToRole="Clientes" />
+          <NavigationProperty Name="Detalles_Facturas" Relationship="examenModel.FK_Facturas_Detalles_Facturas" FromRole="Facturas" ToRole="Detalles_Facturas" />
+          <NavigationProperty Name="Vendedores" Relationship="examenModel.FK_Facturas_Vendedores" FromRole="Facturas" ToRole="Vendedores" />
+        </EntityType>
+        <EntityType Name="Vendedores">
+          <Key>
+            <PropertyRef Name="Id_Vendedor" />
+          </Key>
+          <Property Name="Id_Vendedor" Type="Int32" Nullable="false" />
+          <Property Name="Nombre_Vendedor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion_Vendedor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CP_Vendedor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Ciudad_id" Type="Int32" />
+          <NavigationProperty Name="Ciudades" Relationship="examenModel.FK_Vendedores_Ciudades" FromRole="Vendedores" ToRole="Ciudades" />
+          <NavigationProperty Name="Facturas" Relationship="examenModel.FK_Facturas_Vendedores" FromRole="Vendedores" ToRole="Facturas" />
+        </EntityType>
+        <Association Name="FK_Detalles_Facturas_Articulos">
+          <End Type="examenModel.Articulos" Role="Articulos" Multiplicity="0..1" />
+          <End Type="examenModel.Detalles_Facturas" Role="Detalles_Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Articulos">
+              <PropertyRef Name="id_Articulo" />
+            </Principal>
+            <Dependent Role="Detalles_Facturas">
+              <PropertyRef Name="Articulo_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Clientes_Ciudades">
+          <End Type="examenModel.Ciudades" Role="Ciudades" Multiplicity="0..1" />
+          <End Type="examenModel.Clientes" Role="Clientes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudades">
+              <PropertyRef Name="id_Ciudad" />
+            </Principal>
+            <Dependent Role="Clientes">
+              <PropertyRef Name="Ciudad_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vendedores_Ciudades">
+          <End Type="examenModel.Ciudades" Role="Ciudades" Multiplicity="0..1" />
+          <End Type="examenModel.Vendedores" Role="Vendedores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudades">
+              <PropertyRef Name="id_Ciudad" />
+            </Principal>
+            <Dependent Role="Vendedores">
+              <PropertyRef Name="Ciudad_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Facturas_Clientes">
+          <End Type="examenModel.Clientes" Role="Clientes" Multiplicity="0..1" />
+          <End Type="examenModel.Facturas" Role="Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="id_Cliente" />
+            </Principal>
+            <Dependent Role="Facturas">
+              <PropertyRef Name="Cliente_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Facturas_Detalles_Facturas">
+          <End Type="examenModel.Detalles_Facturas" Role="Detalles_Facturas" Multiplicity="0..1" />
+          <End Type="examenModel.Facturas" Role="Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Detalles_Facturas">
+              <PropertyRef Name="id_Detalle_Factura" />
+            </Principal>
+            <Dependent Role="Facturas">
+              <PropertyRef Name="Detalle_Factura_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Facturas_Vendedores">
+          <End Type="examenModel.Vendedores" Role="Vendedores" Multiplicity="0..1" />
+          <End Type="examenModel.Facturas" Role="Facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendedores">
+              <PropertyRef Name="Id_Vendedor" />
+            </Principal>
+            <Dependent Role="Facturas">
+              <PropertyRef Name="Vendedor_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="examenModelStoreContainer" CdmEntityContainer="examenEntities" >
+          <EntitySetMapping Name="Articulos">
+            <EntityTypeMapping TypeName="examenModel.Articulos">
+              <MappingFragment StoreEntitySet="Articulos">
+                <ScalarProperty Name="Stock_Minimo" ColumnName="Stock_Minimo" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="id_Articulo" ColumnName="id_Articulo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ciudades">
+            <EntityTypeMapping TypeName="examenModel.Ciudades">
+              <MappingFragment StoreEntitySet="Ciudades">
+                <ScalarProperty Name="Nombre_Ciudad" ColumnName="Nombre_Ciudad" />
+                <ScalarProperty Name="id_Ciudad" ColumnName="id_Ciudad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="examenModel.Clientes">
+              <MappingFragment StoreEntitySet="Clientes">
+                <ScalarProperty Name="Ciudad_id" ColumnName="Ciudad_id" />
+                <ScalarProperty Name="CP_Cliente" ColumnName="CP_Cliente" />
+                <ScalarProperty Name="Direccion_Cliente" ColumnName="Direccion_Cliente" />
+                <ScalarProperty Name="Nombre_Cliente" ColumnName="Nombre_Cliente" />
+                <ScalarProperty Name="id_Cliente" ColumnName="id_Cliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Detalles_Facturas">
+            <EntityTypeMapping TypeName="examenModel.Detalles_Facturas">
+              <MappingFragment StoreEntitySet="Detalles_Facturas">
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Articulo_id" ColumnName="Articulo_id" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="id_Detalle_Factura" ColumnName="id_Detalle_Factura" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Facturas">
+            <EntityTypeMapping TypeName="examenModel.Facturas">
+              <MappingFragment StoreEntitySet="Facturas">
+                <ScalarProperty Name="Detalle_Factura_id" ColumnName="Detalle_Factura_id" />
+                <ScalarProperty Name="Descuento" ColumnName="Descuento" />
+                <ScalarProperty Name="Iva" ColumnName="Iva" />
+                <ScalarProperty Name="Vendedor_id" ColumnName="Vendedor_id" />
+                <ScalarProperty Name="Cliente_id" ColumnName="Cliente_id" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="id_Factura" ColumnName="id_Factura" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendedores">
+            <EntityTypeMapping TypeName="examenModel.Vendedores">
+              <MappingFragment StoreEntitySet="Vendedores">
+                <ScalarProperty Name="Ciudad_id" ColumnName="Ciudad_id" />
+                <ScalarProperty Name="CP_Vendedor" ColumnName="CP_Vendedor" />
+                <ScalarProperty Name="Direccion_Vendedor" ColumnName="Direccion_Vendedor" />
+                <ScalarProperty Name="Nombre_Vendedor" ColumnName="Nombre_Vendedor" />
+                <ScalarProperty Name="Id_Vendedor" ColumnName="Id_Vendedor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

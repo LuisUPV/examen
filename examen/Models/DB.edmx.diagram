@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="516bb384ea60451185dc3726c66705ed" Name="Diagram1" >
+        <EntityTypeShape EntityType="examenModel.Articulos" Width="1.5" PointX="0.75" PointY="9.125" />
+        <EntityTypeShape EntityType="examenModel.Ciudades" Width="1.5" PointX="0.75" PointY="3.25" />
+        <EntityTypeShape EntityType="examenModel.Clientes" Width="1.5" PointX="3" PointY="1.375" />
+        <EntityTypeShape EntityType="examenModel.Detalles_Facturas" Width="1.5" PointX="3" PointY="9.125" />
+        <EntityTypeShape EntityType="examenModel.Facturas" Width="1.5" PointX="5.25" PointY="2.625" />
+        <EntityTypeShape EntityType="examenModel.Vendedores" Width="1.5" PointX="3" PointY="4.5" />
+        <AssociationConnector Association="examenModel.FK_Detalles_Facturas_Articulos" />
+        <AssociationConnector Association="examenModel.FK_Clientes_Ciudades" />
+        <AssociationConnector Association="examenModel.FK_Vendedores_Ciudades" />
+        <AssociationConnector Association="examenModel.FK_Facturas_Clientes" />
+        <AssociationConnector Association="examenModel.FK_Facturas_Detalles_Facturas" />
+        <AssociationConnector Association="examenModel.FK_Facturas_Vendedores" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
